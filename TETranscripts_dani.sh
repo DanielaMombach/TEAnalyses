@@ -13,7 +13,7 @@
 #  --TE TE-GTF-file      GTF file for transposable element annotations
 
 #If BAM files are unsorted, or sorted by queryname:
-TEtranscripts --format BAM --mode multi -t RNAseq1.bam RNAseq2.bam -c CtlRNAseq1.bam CtlRNAseq.bam
+/usr/local/bin/TEtranscripts --format BAM --mode multi -t SRR14310043.fastq_Aligned.out.bam SRR14310044.fastq_Aligned.out.bam SRR14310045.fastq_Aligned.out.bam -c SRR14310037.fastq_Aligned.out.bam SRR14310038.fastq_Aligned.out.bam SRR14310039.fastq_Aligned.out.bam --GTF /media/labdros/Daniela/gene_GRCh38.gtf --TE  /media/labdros/Daniela/GRCh38_GENCODE_rmsk_TE.gtf
 
 #usage: TEcount -b RNAseq BAM
 #               --GTF genic-GTF-file
