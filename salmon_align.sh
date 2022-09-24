@@ -30,3 +30,11 @@ ls -1 /media/labdros/Daniela/srr_cispla/reads/*.salmon.REdiscoverTE/*_quant.sf |
 /media/labdros/Daniela/REdiscoverTE/rollup.R --metadata=/media/labdros/Daniela/srr_cispla/reads/REdiscoverTE.tsv --datadir=/media/labdros/Daniela/REdiscoverTE/original/REdiscoverTE/rollup_annotation/ --nozero --threads=8 --assembly=hg38 --outdir=/media/labdros/Daniela/srr_cispla/reads/REdiscoverTE_rollup/
 
 #http://research-pub.gene.com/REdiscoverTEpaper/software/REdiscoverTE_README.html
+
+#in R, RDS to csv table
+library(edgeR)
+
+x <- readRDS("GENE_1_raw_counts.RDS")x
+write.csv(x, "GENE_1_raw_counts.csv", row.names=FALSE)
+GENE_1_raw_counts <- read.csv("GENE_1_raw_counts.csv")
+GENE_1_raw_counts
