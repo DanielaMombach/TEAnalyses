@@ -34,7 +34,20 @@ ls -1 /media/labdros/Daniela/srr_cispla/reads/*.salmon.REdiscoverTE/*_quant.sf |
 #in R, RDS to csv table
 library(edgeR)
 
-x <- readRDS("GENE_1_raw_counts.RDS")x
+x <- readRDS("GENE_1_raw_counts.RDS")
+x
 write.csv(x, "GENE_1_raw_counts.csv", row.names=FALSE)
 GENE_1_raw_counts <- read.csv("GENE_1_raw_counts.csv")
 GENE_1_raw_counts
+
+x <- readRDS("RE_all_1_raw_counts.RDS")
+x
+write.csv(x, "RE_all_1_raw_counts.csv", row.names=FALSE)
+RE_all_1_raw_counts <- read.csv("RE_all_1_raw_counts.csv")
+RE_all_1_raw_counts
+
+x <- readRDS("RE_all_repFamily_1_raw_counts.RDS")
+x
+write.csv(x, "RE_all_repFamily_1_raw_counts.csv", row.names=FALSE)
+RE_all_repFamily_1_raw_counts <- read.csv("RE_all_repFamily_1_raw_counts.csv")
+RE_all_repFamily_1_raw_counts
