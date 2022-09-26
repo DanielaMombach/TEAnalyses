@@ -3,7 +3,7 @@ BiocManager::install("DESeq2", force = TRUE)
 library(DESeq2)
 
 ##Input count table
-counttable = read.csv("A2780_all_repFamily_raw_counts.csv", header = TRUE, row.names = 1, sep = ",")
+counttable = read.csv("A2780_RE_all_raw_counts.csv", header = TRUE, row.names = 1, sep = ",")
 head(counttable)
 
 ##The dim must has only columns representing the samples
