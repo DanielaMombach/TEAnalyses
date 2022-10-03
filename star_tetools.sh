@@ -81,14 +81,6 @@ done
 #	out=$(sed 's|/media.*align/||g' <<< "$align" | sed 's/_R_Aligned.*//g')
 #	echo "Indexing "$out""
 #	samtools index "$align"
-#    featureCounts -B -p -a "$GTF" -C -T 16 "$align" -o "$OUTPUT_STAR"/counts/"$out".count --fracOverlap 1
-#	htseq-count "$align" "$DATA"/"$GTF" --order pos -s reverse > "$OUTPUT_STAR"/counts/"$out".count
-#done
-
-#for file in ${StringArray[@]}; do
-#       echo -e "\n*---------- COUNT TE : ${file}"
-#       python3 "$TETOOLS" -bowtie2 -rosette "$ROSETTETXT" -column 2 -TE_fasta "$ROSETTEFASTA" -count "$DIRCOUNTTE"/"$file""_count.txt" -RNA "$DIRFASTQ"/"$file""1_val_1.fq.gz" -RNApair "$DIRFASTQ"/"$file""2_val_2.fq.gz" -insert 300
-
 #done
 
 echo "DONE!!!!!"
