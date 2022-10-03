@@ -56,7 +56,7 @@ for file in ${StringArray[@]}; do
 		--outFileNamePrefix "$OUTPUT_STAR"/star_align/"$file"_
 
 	mv "$OUTPUT_STAR"/star_align/*final.out "$OUTPUT_STAR"/star_align/stat
-	rm -R "$OUTPUT_STAR"/star_align/*tmp | rm "$OUTPUT_STAR"/star_align/*.out "$OUTPUT_STAR"/star_align/*tab
+#	rm -R "$OUTPUT_STAR"/star_align/*tmp | rm "$OUTPUT_STAR"/star_align/*.out "$OUTPUT_STAR"/star_align/*tab
 done
 
 ##paired-end
