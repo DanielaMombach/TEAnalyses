@@ -48,3 +48,26 @@ Optional arguments:
 
 kallisto quant -i index -o output --single -l 200 -s 20 file1.fastq.gz file2.fastq.gz file3.fastq.gz
 Important note: only supply one sample at a time to kallisto.
+
+# TX import
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("tximport")
+BiocManager::install("rhdf5")
+
+files <- file.path(dir, "kallisto_boot", samples$run, "abundance.h5")
+names(files) <- paste0("sample", 1:6)
+txi.kallisto <- tximport(files, type = "kallisto", txOut = TRUE)
+head(txi.kallisto$counts)
+
+#DESeq2
+#An example of creating a DESeqDataSet for use with DESeq2 (Love, Huber, and Anders 2014):
+
+library(DESeq2)
+#The user should make sure the rownames of sampleTable align with the colnames of txi$counts, if there are colnames. The best practice is to read sampleTable from a CSV file, and to construct files from a column of sampleTable, as was shown in the tximport examples above.
+
+sampleTable <- data.frame(condition = factor(rep(c("A", "B"), each = 3)))
+rownames(sampleTable) <- colnames(txi$counts)
+dds <- DESeqDataSetFromTximport(txi, sampleTable, ~condition)
+# dds is now ready for DESeq() see DESeq2 vignette
