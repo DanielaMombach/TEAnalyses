@@ -55,7 +55,7 @@ for file in ${StringArray[@]}; do
 		--winAnchorMultimapNmax 100 \
 		--outFileNamePrefix "$OUTPUT_STAR"/star_align/"$file"_
 
-	mv "$OUTPUT_STAR"/star_align/*final.out "$OUTPUT_STAR"/star_align/stat
+#	mv "$OUTPUT_STAR"/star_align/*final.out "$OUTPUT_STAR"/star_align/stat
 #	rm -R "$OUTPUT_STAR"/star_align/*tmp | rm "$OUTPUT_STAR"/star_align/*.out "$OUTPUT_STAR"/star_align/*tab
 done
 
