@@ -33,7 +33,7 @@ declare -a StringArray=("SRR14310048.fastq"
 
 DATA=/media/labdros/Daniela/srr_cispla/reads/
 OUTPUT_STAR=/media/labdros/Daniela/srr_cispla/star_out
-GENOME=/media/labdros/Daniela/GRCh38.primary_assembly.genome.fa/GRCh38.primary_assembly.genome.fa
+GENOME=/media/labdros/Daniela/GRCh38.primary_assembly.genome.fa/GRCh38.primary_assembly.genome_GENCODE.fa
 GTF=/media/labdros/Daniela/gencode.v41.primary_assembly.annotation.gtf
 
 #GENCODE: files marked with PRI (primary). Strongly recommended for mouse and human (fasta and GTF)
