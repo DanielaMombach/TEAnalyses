@@ -1,4 +1,4 @@
-#index - from kallisto pre build (https://github.com/pachterlab/kallisto-transcriptome-indices/releases)
+#index - from kallisto pre build v96 (https://github.com/pachterlab/kallisto-transcriptome-indices/releases)
 
 Usage: kallisto index [arguments] FASTA-files
 
