@@ -49,25 +49,34 @@ Optional arguments:
 kallisto quant -i index -o output --single -l 200 -s 20 file1.fastq.gz file2.fastq.gz file3.fastq.gz
 Important note: only supply one sample at a time to kallisto.
 
-# TX import
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("tximport")
-BiocManager::install("rhdf5")
-
-files <- file.path(dir, "kallisto_boot", samples$run, "abundance.h5")
-names(files) <- paste0("sample", 1:6)
-txi.kallisto <- tximport(files, type = "kallisto", txOut = TRUE)
-head(txi.kallisto$counts)
-
 #DESeq2
-#An example of creating a DESeqDataSet for use with DESeq2 (Love, Huber, and Anders 2014):
-
 library(DESeq2)
-#The user should make sure the rownames of sampleTable align with the colnames of txi$counts, if there are colnames. The best practice is to read sampleTable from a CSV file, and to construct files from a column of sampleTable, as was shown in the tximport examples above.
 
-sampleTable <- data.frame(condition = factor(rep(c("A", "B"), each = 3)))
-rownames(sampleTable) <- colnames(txi$counts)
-dds <- DESeqDataSetFromTximport(txi, sampleTable, ~condition)
-# dds is now ready for DESeq() see DESeq2 vignette
+##Input count table
+counttable = read.csv("Acis_kallisto_counts.csv", header = TRUE, row.names = 1, sep = ",")
+head(counttable)
+
+##The dim must has only columns representing the samples
+dim(counttable)
+
+##colData creation
+condition = c("control","control","control","treatment","treatment","treatment")
+colData = data.frame(row.names=colnames(counttable), treatment=factor(condition, levels=c("control","treatment")))
+colData      
+
+counttable$SRR40 = as.numeric(counttable$SRR40)
+counttable$SRR41 = as.numeric(counttable$SRR41)
+counttable$SRR42 = as.numeric(counttable$SRR42)
+counttable$SRR46 = as.numeric(counttable$SRR46)
+counttable$SRR47 = as.numeric(counttable$SRR47)
+counttable$SRR48 = as.numeric(counttable$SRR48)
+counttable[is.na(counttable)] <- 0
+
+##Differential expression analysis
+dataset <- DESeqDataSetFromMatrix(countData = round(counttable), colData = colData, design = ~treatment)
+dataset
+dds = DESeq(dataset)
+head(dds)
+result = results(dds)
+write.table(result, file="Acis_kallisto_deseq.csv", sep = ",")
+
