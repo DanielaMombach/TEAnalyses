@@ -49,11 +49,36 @@ Optional arguments:
 kallisto quant -i index -o output --single -l 200 -s 20 file1.fastq.gz file2.fastq.gz file3.fastq.gz
 Important note: only supply one sample at a time to kallisto.
 
+#TXimport
+setwd("/media/labdros/Daniela/srr_cispla")
+
+#First, we locate the directory containing the files. 
+dir <- "/media/labdros/Daniela/srr_cispla/kallisto"
+list.files(dir)
+
+#Next, we create a named vector pointing to the quantification files. 
+samples <- read.table(file.path(dir, "samples.txt"), header = TRUE)
+samples
+
+#create tx2gene
+tx2gene <- read.delim("tx2gene_grch38_ens94.txt")
+tx2gene
+
+#kallisto
+library(tximport)
+files <- file.path(dir, samples$run, "abundance.tsv")
+files
+file.exists(files)
+names(files) <- paste0("sample", 1:6)
+txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene, ignoreTxVersion = TRUE)
+head(txi.kallisto.tsv$counts)
+write.table(txi.kallisto.tsv, file="A2780_txi.csv", sep = ",")
+
 #DESeq2
 library(DESeq2)
 
 ##Input count table
-counttable = read.csv("Acis_kallisto_counts.csv", header = TRUE, row.names = 1, sep = ",")
+counttable = read.csv("A2780_kallisto_counts.csv", header = TRUE, row.names = 1, sep = ",")
 head(counttable)
 
 ##The dim must has only columns representing the samples
@@ -64,12 +89,12 @@ condition = c("control","control","control","treatment","treatment","treatment")
 colData = data.frame(row.names=colnames(counttable), treatment=factor(condition, levels=c("control","treatment")))
 colData      
 
-counttable$SRR40 = as.numeric(counttable$SRR40)
-counttable$SRR41 = as.numeric(counttable$SRR41)
-counttable$SRR42 = as.numeric(counttable$SRR42)
-counttable$SRR46 = as.numeric(counttable$SRR46)
-counttable$SRR47 = as.numeric(counttable$SRR47)
-counttable$SRR48 = as.numeric(counttable$SRR48)
+counttable$counts.sample1 = as.numeric(counttable$counts.sample1)
+counttable$counts.sample2 = as.numeric(counttable$counts.sample2)
+counttable$counts.sample3 = as.numeric(counttable$counts.sample3)
+counttable$counts.sample4 = as.numeric(counttable$counts.sample4)
+counttable$counts.sample5 = as.numeric(counttable$counts.sample5)
+counttable$counts.sample6 = as.numeric(counttable$counts.sample6)
 counttable[is.na(counttable)] <- 0
 
 ##Differential expression analysis
@@ -78,5 +103,5 @@ dataset
 dds = DESeq(dataset)
 head(dds)
 result = results(dds)
-write.table(result, file="Acis_kallisto_deseq.csv", sep = ",")
+write.table(result, file="A2780_kallisto_deseq.csv", sep = ",")
 
