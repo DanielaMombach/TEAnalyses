@@ -10,4 +10,5 @@ telescope assign -h
 telescope test #only works without bulk
 telescope assign #with file paths shown above
 
-
+#run for each SRR
+telescope assign SRR14310037.fastq_Aligned.out.bam /media/labdros/Daniela/pcbi.1006453.s006.gtf 
