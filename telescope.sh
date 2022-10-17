@@ -18,9 +18,9 @@ telescope assign SRR14310037.fastq_Aligned.out.bam /media/labdros/Daniela/pcbi.1
 cut -f1 telescope-telescope_report_37.tsv telescope-telescope_report_38.tsv telescope-telescope_report_39.tsv telescope-telescope_report_43.tsv telescope-telescope_report_44.tsv telescope-telescope_report_45.tsv | sed 's/"//g' | sort | uniq -c | sed 's/^[ \t]*//;s/ /\t/' | sort -k1 -h | grep ^6 | cut -f2 > em_todos.txt
 
 #get ids and counts
-  for tab in telescope-telescope_report_37.tsv telescope-telescope_report_38.tsv telescope-telescope_report_39.tsv telescope-telescope_report_43.tsv telescope-telescope_report_44.tsv telescope-telescope_report_45.tsv; do grep -w -f em_todos.txt $tab | cut -f1,3 | sed 's/\t/,/' > counts_${tab}; done
+for tab in telescope-telescope_report_37.tsv telescope-telescope_report_38.tsv telescope-telescope_report_39.tsv telescope-telescope_report_43.tsv telescope-telescope_report_44.tsv telescope-telescope_report_45.tsv; do grep -w -f em_todos.txt $tab | cut -f1,3 | sed 's/\t/,/' > counts_${tab}; done
 
-#conferir
+#check
 for tab in telescope-telescope_report_37.tsv telescope-telescope_report_38.tsv telescope-telescope_report_39.tsv telescope-telescope_report_43.tsv telescope-telescope_report_44.tsv telescope-telescope_report_45.tsv; do grep -c -f em_todos.txt $tab ;done
 
 #DESeq2
