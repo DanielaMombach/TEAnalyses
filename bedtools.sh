@@ -1,12 +1,12 @@
-# gene coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz
-# TE coordinates: Coord_TEs_GCF_000001405.25_GRCh37.p13_rm.bed
+# gene coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf
+# TE coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_rm.out
 
 # To run Bedtools instersect we need to change the files to BED.
 
 ## gene file to BED
-awk '$3 == "gene"' GCF_000001405.25_GRCh37.p13_genomic.gtf | awk '{print $1, $4, $5, $10, $6, $7}' | sed 's/[";]//g;s/ /\t/g' > GCF_000001405.25_GRCh37.p13_genomic.bed
+awk '$3 == "gene"' GCF_000001405.40_GRCh38.p14_genomic.gtf | awk '{print $1, $4, $5, $10, $6, $7}' | sed 's/[";]//g;s/ /\t/g' > GCF_000001405.40_GRCh38.p14_genomic.bed
 ### upstream region
-bash create_upstream_region.sh GCF_000001405.25_GRCh37.p13_genomic.bed 3000 upstream_genes.bed
+bash create_upstream_region.sh GCF_000001405.40_GRCh38.p14_genomic.bed 3000 upstream_genes.bed
 
 #create_upstream_region.sh
 #!/bin/bash
@@ -38,10 +38,9 @@ do
         fi
 done < $1
 
-## TE file to BED já pronto
-#sed -i 's/C$/-/;s/ /\t/g' GRCh38_GENCODE_rmsk_TE.gtf #prepare file (strand from C to)
-#awk '{print $10, $4, $5, $7, $14, $16, $7}' GRCh38_GENCODE_rmsk_TE_bedtools.gtf > GRCh38_GENCODE_rmsk_TE.bed
-#sed 's/;//g;s/"//g;s/ /\t/g'
+## TE file to BED (remove header and C to -)
+tail -n +4 GCF_000001405.40_GRCh38.p14_rm.out | awk '{print $5, $6, $7, $11, $15, $9}' | sed 's/C$/-/;s/ /\t/g' > GCF_000001405.40_GRCh38.p14_rm.bed
 
 # run bedtools intersect
-bedtools intersect -wa -wb -a Homo_sapiens.GRCh38.96.bed -b Coord_TEs_GCF_000001405.25_GRCh37.p13_rm.bed -s -f 0.2 > TEs_inside_gene.txt
+bedtools intersect -wa -wb -a GCF_000001405.40_GRCh38.p14_genomic.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_inside_gene.txt
+bedtools intersect -wa -wb -a upstream_genes.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_inside_gene.txt
