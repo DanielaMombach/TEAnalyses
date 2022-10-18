@@ -15,6 +15,7 @@
 #  --GTF genic-GTF-file  GTF file for gene annotations
 #  --TE TE-GTF-file      GTF file for transposable element annotations
 
+#GTF: https://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/
 #If BAM files are unsorted, or sorted by queryname:
 
 #A2780 vs A2780 cisplatin
