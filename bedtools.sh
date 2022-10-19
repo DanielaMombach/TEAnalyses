@@ -44,3 +44,6 @@ tail -n +4 GCF_000001405.40_GRCh38.p14_rm.out | awk '{print $5, $6, $7, $10, $15
 # run bedtools intersect
 bedtools intersect -wa -wb -a GCF_000001405.40_GRCh38.p14_genomic_gene.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_inside_gene.txt
 bedtools intersect -wa -wb -a upstream_genes.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_upstream_gene.txt
+
+grep -f A2780_ids.txt TEs_inside_gene.txt
+grep -f A2780_ids.txt TEs_upstream_gene.txt
