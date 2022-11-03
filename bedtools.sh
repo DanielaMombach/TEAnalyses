@@ -1,19 +1,23 @@
 # gene coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf
 # TE coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_rm.out
-# or TEtranscripts indexes
+# TEtranscripts TE index: https://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/GRCh38_GENCODE_rmsk_TE.gtf
+# GENCODE gene annotation
 
 # To run Bedtools instersect we need to change the files to BED.
+# BED files order: $chr $start $end $gene $. $strand (tab separated)
 
 ## gene file to BED
 awk '$3 == "gene"' GCF_000001405.40_GRCh38.p14_genomic.gtf | awk '{print $1, $4, $5, $10, $6, $7}' | sed 's/[";]//g;s/ /\t/g' > GCF_000001405.40_GRCh38.p14_genomic_gene.bed
 ### upstream region
 bash create_upstream_region.sh GCF_000001405.40_GRCh38.p14_genomic_gene.bed 3000 upstream_genes.bed
 
-## TEtranscripts
-awk '$3 == "CDS"' gene_GRCh38.gtf | awk '{print $4, $5, $1, $7, $7}' > gene_GRCh38.txt
+## GENCODE gene annotation
+awk '$3 == "CDS"' gene_GRCh38.gtf | awk '{print $1, $4, $5}' > gene_GRCh38.txt
 awk '$3 == "CDS"' gene_GRCh38.gtf | cut -f9 | cut -d';' -f1 | cut -d'"' -f2 > gene_GRCh38_ID.txt
-paste gene_GRCh38_ID.txt gene_GRCh38.txt > gene_GRCh38.bed 
-sed 's/ /\t/g' gene_GRCh38.bed -i
+awk '$3 == "CDS"' gene_GRCh38.gtf | awk '{print $3, $7}' > gene_GRCh38_end.txt
+paste gene_GRCh38.txt gene_GRCh38_ID.txt > gene_GRCh38_alm.txt
+paste gene_GRCh38_alm.txt gene_GRCh38_end.txt > gene_GRCh38_done.txt
+sed 's/ /\t/g' gene_GRCh38_done.txt > gene_GRCh38.bed
 bash create_upstream_region.sh gene_GRCh38.bed 5000 upstream_genes2.bed
 
 #create_upstream_region.sh
@@ -50,16 +54,20 @@ done < $1
 tail -n +4 GCF_000001405.40_GRCh38.p14_rm.out | awk '{print $5, $6, $7, $10, $15, $9}' | sed 's/C$/-/;s/ /\t/g' > GCF_000001405.40_GRCh38.p14_rm.bed
 
 ## TEtranscripts
-awk '{print $4, $5, $1, $7, $7}' GRCh38_GENCODE_rmsk_TE.gtf > GRCh38_GENCODE_rmsk_TE.txt
-cut -d';' -f1 GRCh38_GENCODE_rmsk_TE.gtf | cut -d'"' -f2 > GRCh38_GENCODE_rmsk_TE_ID.txt
-paste GRCh38_GENCODE_rmsk_TE_ID.txt GRCh38_GENCODE_rmsk_TE.txt > GRCh38_GENCODE_rmsk_TE.bed 
-sed 's/ /\t/g' GRCh38_GENCODE_rmsk_TE.bed -i
+awk '{print $1, $4, $5}' GRCh38_GENCODE_rmsk_TE.gtf > GRCh38_GENCODE_rmsk_TE.txt
+cut -f9 GRCh38_GENCODE_rmsk_TE.gtf | cut -d';' -f1 | cut -d'"' -f2 > GRCh38_GENCODE_rmsk_TE_ID.txt
+awk '{print $3, $7}' GRCh38_GENCODE_rmsk_TE.gtf > GRCh38_GENCODE_rmsk_TE_end.txt
+paste GRCh38_GENCODE_rmsk_TE.txt GRCh38_GENCODE_rmsk_TE_ID.txt > GRCh38_GENCODE_rmsk_TE_alm.txt
+paste GRCh38_GENCODE_rmsk_TE_alm.txt GRCh38_GENCODE_rmsk_TE_end.txt > GRCh38_GENCODE_rmsk_TE_done.txt
+sed 's/ /\t/g' GRCh38_GENCODE_rmsk_TE_done.txt > GRCh38_GENCODE_rmsk_TE.bed
 
 ## telescope
-awk '{print $4, $5, $1, $7, $7}' pcbi.1006453.s006.gtf > pcbi.1006453.s006.txt
-cut -d';' -f2 pcbi.1006453.s006.gtf | cut -d'"' -f2 > pcbi.1006453.s006_ID.txt
-paste pcbi.1006453.s006_ID.txt pcbi.1006453.s006.txt > pcbi.1006453.s006.bed
-sed 's/ /\t/g' pcbi.1006453.s006.bed -i
+awk '{print $1, $4, $5}' pcbi.1006453.s006.gtf > pcbi.1006453.s006.txt
+cut -f9 pcbi.1006453.s006.gtf | cut -d';' -f1 | cut -d'"' -f2 > pcbi.1006453.s006_ID.txt
+awk '{print $3, $7}' pcbi.1006453.s006.gtf > pcbi.1006453.s006_end.txt
+paste pcbi.1006453.s006.txt pcbi.1006453.s006_ID.txt > pcbi.1006453.s006_alm.txt
+paste pcbi.1006453.s006_alm.txt pcbi.1006453.s006_end.txt > pcbi.1006453.s006_done.txt
+sed 's/ /\t/g' pcbi.1006453.s006_done.txt > pcbi.1006453.s006.bed
 sed '/#/d' pcbi.1006453.s006.bed -i
 
 # run bedtools intersect
@@ -70,5 +78,8 @@ bedtools intersect -wa -wb -a upstream_genes.bed -b GCF_000001405.40_GRCh38.p14_
 bedtools intersect -wa -wb -a gene_GRCh38.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_inside_gene2.txt
 bedtools intersect -wa -wb -a upstream_genes2.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_upstream_gene2.txt
 
-grep -f A2780_ids.txt TEs_inside_gene.txt
-grep -f A2780_ids.txt TEs_upstream_gene.txt
+# telescope
+bedtools intersect -wa -wb -a gene_GRCh38.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_inside_gene3.txt
+bedtools intersect -wa -wb -a upstream_genes2.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_upstream_gene3.txt
+
+## use grep to find your TEs then your DEGs
