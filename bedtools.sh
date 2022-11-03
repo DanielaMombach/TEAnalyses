@@ -1,7 +1,7 @@
 # gene coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf
 # TE coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_rm.out
 # TEtranscripts TE index: https://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/GRCh38_GENCODE_rmsk_TE.gtf
-# GENCODE gene annotation
+# GENCODE gene annotation https://www.gencodegenes.org/human/ (Comprehensive gene anot CHR)
 
 # To run Bedtools instersect we need to change the files to BED.
 # BED files order: $chr $start $end $gene $. $strand (tab separated)
@@ -12,13 +12,13 @@ awk '$3 == "gene"' GCF_000001405.40_GRCh38.p14_genomic.gtf | awk '{print $1, $4,
 bash create_upstream_region.sh GCF_000001405.40_GRCh38.p14_genomic_gene.bed 3000 upstream_genes.bed
 
 ## GENCODE gene annotation
-awk '$3 == "CDS"' gene_GRCh38.gtf | awk '{print $1, $4, $5}' > gene_GRCh38.txt
-awk '$3 == "CDS"' gene_GRCh38.gtf | cut -f9 | cut -d';' -f1 | cut -d'"' -f2 > gene_GRCh38_ID.txt
-awk '$3 == "CDS"' gene_GRCh38.gtf | awk '{print $3, $7}' > gene_GRCh38_end.txt
-paste gene_GRCh38.txt gene_GRCh38_ID.txt > gene_GRCh38_alm.txt
-paste gene_GRCh38_alm.txt gene_GRCh38_end.txt > gene_GRCh38_done.txt
-sed 's/ /\t/g' gene_GRCh38_done.txt > gene_GRCh38.bed
-bash create_upstream_region.sh gene_GRCh38.bed 5000 upstream_genes2.bed
+awk '$3 == "gene"' gencode.v42.annotation.gtf | awk '{print $1, $4, $5}' > gencode.v42.annotation.txt
+awk '$3 == "gene"' gencode.v42.annotation.gtf | cut -f9 | cut -d';' -f1 | cut -d'"' -f2 > gencode.v42.annotation_ID.txt
+awk '$3 == "gene"' gencode.v42.annotation.gtf | awk '{print $6, $7}' > gencode.v42.annotation_end.txt
+paste gencode.v42.annotation.txt gencode.v42.annotation_ID.txt > gencode.v42.annotation_alm.txt
+paste gencode.v42.annotation_alm.txt gencode.v42.annotation_end.txt > gencode.v42.annotation_done.txt
+sed 's/ /\t/g' gencode.v42.annotation_done.txt > gencode.v42.annotation.bed
+bash create_upstream_region.sh gencode.v42.annotation.bed 5000 gencode.v42.annotation_5kbupstream.bed
 
 #create_upstream_region.sh
 #!/bin/bash
@@ -75,11 +75,11 @@ bedtools intersect -wa -wb -a GCF_000001405.40_GRCh38.p14_genomic_gene.bed -b GC
 bedtools intersect -wa -wb -a upstream_genes.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_upstream_gene.txt
 
 # TE transcripts
-bedtools intersect -wa -wb -a gene_GRCh38.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_inside_gene2.txt
-bedtools intersect -wa -wb -a upstream_genes2.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_upstream_gene2.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_inside_gene2.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b GRCh38_GENCODE_rmsk_TE.bed -s -f 0.2 > TEs_upstream_gene2.txt
 
 # telescope
-bedtools intersect -wa -wb -a gene_GRCh38.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_inside_gene3.txt
-bedtools intersect -wa -wb -a upstream_genes2.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_upstream_gene3.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_inside_gene3.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_upstream_gene3.txt
 
 ## use grep to find your TEs then your DEGs
