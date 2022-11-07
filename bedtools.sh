@@ -70,6 +70,9 @@ paste pcbi.1006453.s006_alm.txt pcbi.1006453.s006_end.txt > pcbi.1006453.s006_do
 sed 's/ /\t/g' pcbi.1006453.s006_done.txt > pcbi.1006453.s006.bed
 sed '/#/d' pcbi.1006453.s006.bed -i
 
+## REdiscoverTE
+#rediscoverBED.py = plus and minus bed files
+
 # run bedtools intersect
 bedtools intersect -wa -wb -a GCF_000001405.40_GRCh38.p14_genomic_gene.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_inside_gene.txt
 bedtools intersect -wa -wb -a upstream_genes.bed -b GCF_000001405.40_GRCh38.p14_rm.bed -s -f 0.2 > TEs_upstream_gene.txt
@@ -81,5 +84,11 @@ bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b GRCh38_G
 # telescope
 bedtools intersect -wa -wb -a gencode.v42.annotation.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_inside_gene3.txt
 bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b pcbi.1006453.s006.bed -s -f 0.2 > TEs_upstream_gene3.txt
+
+# telescope
+bedtools intersect -wa -wb -a gencode.v42.annotation.bed -b  rmsk_plus.bed -s -f 0.2 > TEs_inside_gene4.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation.bed -b  rmsk_min.bed -s -f 0.2 > TEs_inside_gene4m.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b  rmsk_plus.bed -s -f 0.2 > TEs_upstream_gene4.txt
+bedtools intersect -wa -wb -a gencode.v42.annotation_5kbupstream.bed -b  rmsk_min.bed -s -f 0.2 > TEs_upstream_gene4m.txt
 
 ## use grep to find your TEs then your DEGs
