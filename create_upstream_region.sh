@@ -3,6 +3,8 @@
 
 #Author: Daniel Siqueira de Oliveira, feb/2022
 
+#usage: bash create_upstream_region.sh gencode.v42.annotation.bed 5000 gencode.v42.annotation_5kbupstream.bed
+
 #$1= input.bed
 #$2= window size
 #$3= output.bed
