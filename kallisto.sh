@@ -19,7 +19,7 @@ list.files(dir)
 samples <- read.table(file.path(dir, "samples.txt"), header = TRUE)
 samples
 
-#create tx2gene
+#create tx2gene (https://hbctraining.github.io/DGE_workshop_salmon/lessons/01_DGE_setup_and_overview.html)
 tx2gene <- read.delim("tx2gene_grch38_ens94.txt")
 tx2gene
 
