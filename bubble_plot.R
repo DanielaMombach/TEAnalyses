@@ -1,3 +1,5 @@
+# https://r-graph-gallery.com/320-the-basis-of-bubble-plot.html
+
 library(ggplot2)
 library(dplyr)
 
@@ -10,6 +12,6 @@ data <- read.table('GO_cispla.csv', header = TRUE, sep=',') %>% filter(dataset==
 data %>%
   arrange(desc(enrichment)) %>%
   mutate(pathway = factor(pathway, pathway)) %>%
-  ggplot(aes(x=count, y=pathway, size=enrichment, color=FDR)) +
+  ggplot(aes(x=varia, y=pathway, size=enrichment, color=FDR)) +
   geom_point(alpha=0.5) +
   scale_size(range = c(.1, 24), name="Enrichment")
