@@ -1,6 +1,6 @@
 #index - from kallisto pre build v96 (https://github.com/pachterlab/kallisto-transcriptome-indices/releases) - ENSEMBL
     
-kallisto index -i index /media/labdros/Daniela/homo_sapiens/Homo_sapiens.GRCh38.cdna.all.fa
+kallisto index/tx2gene -i index /media/labdros/Daniela/homo_sapiens/Homo_sapiens.GRCh38.cdna.all.fa
     
 # quant                              
 # For single-end mode you supply the --single flag, as well as the -l and -s options, and list any number of FASTQ files, e.g
