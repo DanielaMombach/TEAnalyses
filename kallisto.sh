@@ -1,12 +1,22 @@
-#index - from kallisto pre build v96 (https://github.com/pachterlab/kallisto-transcriptome-indices/releases) - ENSEMBL
-    
-kallisto index/tx2gene -i index /media/labdros/Daniela/homo_sapiens/Homo_sapiens.GRCh38.cdna.all.fa
+#index
+ln -s /home/projects2/databases/gencode/release36/gencode.v36.transcripts.fa.gz
+kallisto index -i geneSeq_v36.idx gencode.v36.transcripts.fa.gz 2>log_indexKalisto
     
 # quant                              
-# For single-end mode you supply the --single flag, as well as the -l and -s options, and list any number of FASTQ files, e.g
-
-kallisto quant -i index -o output --single -l 200 -s 20 file1.fastq.gz file2.fastq.gz file3.fastq.gz
-Important note: only supply one sample at a time to kallisto.
+# For single-end mode you supply the --single flag, as well as the -l and -s options (read_size=75-77 and read_size_sd=1)
+# Important note: only supply one sample at a time to kallisto
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_37 --single -l 76 -s 1 -t 3 SRR14310037_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_38 --single -l 76 -s 1 -t 3 SRR14310038_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_39 --single -l 76 -s 1 -t 3 SRR14310039_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_40 --single -l 76 -s 1 -t 3 SRR14310040_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_41 --single -l 76 -s 1 -t 3 SRR14310041_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310042_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310043_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310044_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310045_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310046_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310047_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310048_SS.fastq.gz &
 
 #TXimport
 setwd("/media/labdros/Daniela/srr_cispla")
