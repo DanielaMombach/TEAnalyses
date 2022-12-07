@@ -19,6 +19,18 @@ kallisto quant -i geneSeq_v36.idx -o kallisto/output_46 --single -l 76 -s 1 -t 3
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_47 --single -l 76 -s 1 -t 3 SRR14310047_SS.fastq.gz &
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_48 --single -l 76 -s 1 -t 3 SRR14310048_SS.fastq.gz &
 
+# tx2gene ###########################################################################################################
+# Create mapping between transcripts and corresponding genes
+
+echo "TXNAME,GENEID" > tx2gene.csv
+awk -F "|" '{if(NR>1){print $1","$2}}' output_37/abundance.tsv >> tx2gene.csv
+
+# Process output of kallisto
+
+for f in $(find . -type d -name "output*"); do
+    awk -F "|" '{print $1$9}' $f/abundance.tsv > $f/final_abundance.tsv
+done
+
 # TXimport in R ########################################################################################################
 # First, we locate the directory containing the files. 
 dir <- "/kallisto"
