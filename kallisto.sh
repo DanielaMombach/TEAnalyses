@@ -22,7 +22,7 @@ kallisto quant -i geneSeq_v36.idx -o kallisto/output_48 --single -l 76 -s 1 -t 3
 # TX2gene #############################################################################################################
 # Create mapping between transcripts and corresponding genes
 echo "TXNAME,GENEID" > tx2gene.csv
-awk -F "|" '{if(NR>1){print $1","$2}}' kallisto/output_37/abundance.tsv >> tx2gene.csv
+awk -F "|" '{if(NR>1){print $1","$2}}' output_37/abundance.tsv >> tx2gene.csv
 
 # Process output of kallisto
 for f in $(find . -type d -name "output*"); do
