@@ -51,7 +51,7 @@ files
 file.exists(files)
 names(files) <- paste0("sample", 1:6)
 files
-txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene, ignoreAfterBar = TRUE)
+txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene)
 head(txi.kallisto.tsv$counts)
 write.table(txi.kallisto.tsv, file="A2780_txi.csv", sep = ",")
 
