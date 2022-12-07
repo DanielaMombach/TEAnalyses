@@ -54,6 +54,7 @@ files
 txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene)
 head(txi.kallisto.tsv$counts)
 write.table(txi.kallisto.tsv, file="A2780_txi.csv", sep = ",")
+# columns header need to be fixed!!
 
 # DESeq2 in R #############################################################################################################
 library(DESeq2)
@@ -85,3 +86,4 @@ dds = DESeq(dataset)
 head(dds)
 result = results(dds)
 write.table(result, file="A2780_deseq.csv", sep = ",")
+# columns header need to be fixed!!
