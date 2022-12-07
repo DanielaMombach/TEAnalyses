@@ -1,10 +1,8 @@
 # gene coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf
 # TE coordinates: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_rm.out
-# TEtranscripts TE index: https://labshare.cshl.edu/shares/mhammelllab/www-data/TEtranscripts/TE_GTF/GRCh38_GENCODE_rmsk_TE.gtf
-# GENCODE gene annotation https://www.gencodegenes.org/human/ (Comprehensive gene anot CHR)
 
 # To run Bedtools instersect we need to change the files to BED.
-# BED files order: $chr $start $end $gene $. $strand (tab separated)
+# BED files order: $chr $start $end $gene $. $strand (tab separated)(annot2BED.ipynb)
 
 ## gene file to BED
 awk '$3 == "gene"' GCF_000001405.40_GRCh38.p14_genomic.gtf | awk '{print $1, $4, $5, $10, $6, $7}' | sed 's/[";]//g;s/ /\t/g' > GCF_000001405.40_GRCh38.p14_genomic_gene.bed
@@ -18,6 +16,8 @@ awk '$3 == "gene"' gencode.v42.annotation.gtf | awk '{print $6, $7}' > gencode.v
 paste gencode.v42.annotation.txt gencode.v42.annotation_ID.txt > gencode.v42.annotation_alm.txt
 paste gencode.v42.annotation_alm.txt gencode.v42.annotation_end.txt > gencode.v42.annotation_done.txt
 sed 's/ /\t/g' gencode.v42.annotation_done.txt > gencode.v42.annotation.bed
+
+## upstream region
 bash create_upstream_region.sh gencode.v42.annotation.bed 5000 gencode.v42.annotation_5kbupstream.bed
 
 ## TE file to BED (remove header and C to -)
