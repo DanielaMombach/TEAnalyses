@@ -47,7 +47,7 @@ write.table(txi.kallisto.tsv, file="A2780_txi.csv", sep = ",")
 library(DESeq2)
 
 ## Input count table
-counttable = read.csv("A2780_kallisto_counts.csv", header = TRUE, row.names = 1, sep = ",")
+counttable = read.csv("A2780_counts.csv", header = TRUE, row.names = 1, sep = ",")
 head(counttable)
 
 ## The dim must has only columns representing the samples
@@ -72,4 +72,4 @@ dataset
 dds = DESeq(dataset)
 head(dds)
 result = results(dds)
-write.table(result, file="A2780_kallisto_deseq.csv", sep = ",")
+write.table(result, file="A2780_deseq.csv", sep = ",")
