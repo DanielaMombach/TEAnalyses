@@ -19,38 +19,27 @@ kallisto quant -i geneSeq_v36.idx -o kallisto/output_46 --single -l 76 -s 1 -t 3
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_47 --single -l 76 -s 1 -t 3 SRR14310047_SS.fastq.gz &
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_48 --single -l 76 -s 1 -t 3 SRR14310048_SS.fastq.gz &
 
-# TX2gene #############################################################################################################
-# Create mapping between transcripts and corresponding genes
-echo "TXNAME,GENEID" > tx2gene.csv
-awk -F "|" '{if(NR>1){print $1","$2}}' output_37/abundance.tsv >> tx2gene.csv
-
-# Process output of kallisto
-for f in $(find . -type d -name "output*"); do
-    awk -F "|" '{print $1$9}' $f/abundance.tsv > $f/final_abundance.tsv
-done
-
 # TXimport in R ########################################################################################################
-setwd("/media/labdros/Daniela/srr_cispla")
-
 # First, we locate the directory containing the files. 
-dir <- "/media/labdros/Daniela/srr_cispla/kallisto"
+dir <- "/kallisto"
 list.files(dir)
 
 # Next, we create a named vector pointing to the quantification files. 
 samples <- read.table(file.path(dir, "samples.txt"), header = TRUE)
 samples
 
-# create tx2gene (https://hbctraining.github.io/DGE_workshop_salmon/lessons/01_DGE_setup_and_overview.html) - ENSEMBL
-tx2gene <- read.delim("tx2gene_grch38_ens94.txt")
+# create tx2gene
+tx2gene <- read.csv("tx2gene.csv")
 tx2gene
 
 # for kallisto
 library(tximport)
-files <- file.path(dir, samples$run, "abundance.tsv")
+files <- file.path(dir, samples$run, "final_abundance.tsv")
 files
 file.exists(files)
 names(files) <- paste0("sample", 1:6)
-txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene, ignoreTxVersion = TRUE)
+files
+txi.kallisto.tsv <- tximport(files, type = "kallisto", tx2gene = tx2gene, ignoreAfterBar = TRUE)
 head(txi.kallisto.tsv$counts)
 write.table(txi.kallisto.tsv, file="A2780_txi.csv", sep = ",")
 
