@@ -11,14 +11,24 @@ kallisto quant -i geneSeq_v36.idx -o kallisto/output_39 --single -l 76 -s 1 -t 3
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_40 --single -l 76 -s 1 -t 3 SRR14310040_SS.fastq.gz &
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_41 --single -l 76 -s 1 -t 3 SRR14310041_SS.fastq.gz &
 kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310042_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310043_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310044_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310045_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310046_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310047_SS.fastq.gz &
-kallisto quant -i geneSeq_v36.idx -o kallisto/output_42 --single -l 76 -s 1 -t 3 SRR14310048_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_43 --single -l 76 -s 1 -t 3 SRR14310043_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_44 --single -l 76 -s 1 -t 3 SRR14310044_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_45 --single -l 76 -s 1 -t 3 SRR14310045_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_46 --single -l 76 -s 1 -t 3 SRR14310046_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_47 --single -l 76 -s 1 -t 3 SRR14310047_SS.fastq.gz &
+kallisto quant -i geneSeq_v36.idx -o kallisto/output_48 --single -l 76 -s 1 -t 3 SRR14310048_SS.fastq.gz &
 
-#TXimport
+#TX2gene
+# Create mapping between transcripts and corresponding genes
+echo "TXNAME,GENEID" > tx2gene.csv
+awk -F "|" '{if(NR>1){print $1","$2}}' kallisto/output_37/abundance.tsv >> tx2gene.csv
+
+# Process output of kallisto
+for f in $(find . -type d -name "output*"); do
+    awk -F "|" '{print $1$9}' $f/abundance.tsv > $f/final_abundance.tsv
+done
+
+#TXimport in R
 setwd("/media/labdros/Daniela/srr_cispla")
 
 #First, we locate the directory containing the files. 
