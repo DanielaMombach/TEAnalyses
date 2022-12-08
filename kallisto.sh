@@ -87,3 +87,6 @@ head(dds)
 result = results(dds)
 write.table(result, file="A2780_deseq.csv", sep = ",")
 # columns header need to be fixed!!
+
+## get only protein-coding genes from annotation
+grep -w "gene" gencode.v36.annotation.gtf  | grep -w "protein_coding" > tmp_protein_coding
